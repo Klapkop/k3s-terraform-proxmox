@@ -1,5 +1,5 @@
 ---
-k3s_version: v1.24.8+k3s1
+k3s_version: "${k3s_version}"
 # this is the user that has ssh access to these machines
 ansible_user: "${ansible_user}"
 systemd_dir: /etc/systemd/system
@@ -39,11 +39,11 @@ extra_server_args: >-
 extra_agent_args: >-
   {{ extra_args }}
 # image tag for kube-vip
-kube_vip_tag_version: "v0.5.7"
+kube_vip_tag_version: "${kube_vip_version}"
 
 # image tag for metal lb
-metal_lb_speaker_tag_version: "v0.13.7"
-metal_lb_controller_tag_version: "v0.13.7"
+metal_lb_speaker_tag_version: "${metal_lb_speaker_version}"
+metal_lb_controller_tag_version: "${metal_lb_controller_version}"
 
 # metallb ip range for load balancer
 metal_lb_ip_range: "${metal_lb_ip_range}"

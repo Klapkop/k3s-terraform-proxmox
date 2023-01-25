@@ -9,7 +9,6 @@ locals {
 
 resource "proxmox_vm_qemu" "proxmox_vm_server" {
   count       = var.k3s_servers.num
-  vmid        = var.pm_vmid_offset + count.index
   name        = "${var.cluster_name}-server-${count.index}"
   target_node = var.pm_node_name
   clone       = var.pm_template_name
@@ -20,10 +19,10 @@ resource "proxmox_vm_qemu" "proxmox_vm_server" {
   cores       = var.k3s_servers.cores
   scsihw      = "virtio-scsi-pci"
   ciuser      = var.ansible_user
-  sshkeys     = var.ssh_key
+  sshkeys     = local.my_keys
   tags        = "k3s, server, ${var.cluster_name}"
-
   ipconfig0 = "ip=${var.k3s_servers.ips[count.index]}/${var.network.netmask},gw=${var.network.gateway}"
+
   network {
       bridge    = var.network.bridge
       model     = "virtio"
@@ -51,7 +50,6 @@ resource "proxmox_vm_qemu" "proxmox_vm_server" {
 resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   count       = var.k3s_workers.num
   name        = "${var.cluster_name}-worker-${count.index}"
-  vmid        = var.pm_vmid_offset + var.k3s_servers.num + count.index
   target_node = var.pm_node_name
   clone       = var.pm_template_name
   full_clone  = var.pm_clone_full
@@ -60,10 +58,11 @@ resource "proxmox_vm_qemu" "proxmox_vm_workers" {
   memory      = var.k3s_workers.memory
   cores       = var.k3s_workers.cores
   scsihw      = "virtio-scsi-pci"
-  ipconfig0   = "ip=${var.k3s_workers.ips[count.index]}/${var.network.netmask},gw=${var.network.gateway}"
   ciuser      = var.ansible_user
-  sshkeys     = var.ssh_key
+  sshkeys     = local.my_keys
   tags        = "k3s, worker, ${var.cluster_name}"
+  ipconfig0   = "ip=${var.k3s_workers.ips[count.index]}/${var.network.netmask},gw=${var.network.gateway}"
+
   network {
       bridge    = var.network.bridge
       model     = "virtio"
@@ -103,8 +102,12 @@ data "template_file" "ansible_vars" {
     ansible_user = var.ansible_user
     ansible_tz = var.ansible_tz
     k3s_endpoint_ip = var.network.endpoint
+    k3s_token = random_password.k3s_token.result
+    k3s_version = var.k3s_version
+    kube_vip_version = var.kube_vip_version
+    metal_lb_speaker_version = var.metal_lb_speaker_version
+    metal_lb_controller_version = var.metal_lb_controller_version
     metal_lb_ip_range = var.network.lb_ip_range
-    k3s_token = random_password.k3s_token.result 
   }
   
 }
@@ -117,7 +120,7 @@ resource "local_file" "inventory_file" {
 
 resource "local_file" "user_var_file" {
   content  = data.template_file.ansible_vars.rendered
-  filename = "${var.ansible_inventory_path}/${var.cluster_name}/${var.cluster_name}/group_vars/all.yaml"
+  filename = "${var.ansible_inventory_path}/${var.cluster_name}/group_vars/all.yaml"
 }
 
 resource "random_password" "k3s_token" {

@@ -34,7 +34,7 @@ variable "pm_storage_pool" {
 }
 variable "pm_network_bridge" {
   type = string
-  default = "vmbr1"
+  default = "vmbr0"
 }
 
 variable "pvt_key" {
@@ -65,6 +65,27 @@ variable "ansible_inventory_path" {
 
 variable "ansible_tz" {
   description = "Timezone set by Ansible"  
+}
+
+variable "k3s_version" {
+  type = string
+  description = "k3s version to install"
+}
+
+
+variable "kube_vip_version" {
+  type = string
+  description = "Kubevip version to install on cluster"
+}
+
+variable "metal_lb_speaker_version" {
+  type = string
+  description = "Metallb version to install on cluster"
+}
+
+variable "metal_lb_controller_version" {
+  type = string
+  description = "Kubevip version to install on cluster"
 }
 
 variable "k3s_servers" {
