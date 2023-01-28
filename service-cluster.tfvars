@@ -4,17 +4,17 @@ pm_host = "10.1.0.5"
 pm_clone_full = false
 pm_storage_pool = "local-lvm"
 pm_node_name = "pve"
-pm_template_name = "ubuntu-2204-cloudinit-template"
+pm_template_name = "ubuntu-22.04-cloudimg-amd64"
 pm_network_bridge = "vmbr1"
 
 # Ansible
 github_username = "klapkop"
 ansible_user = "ansible"
-ansible_inventory_path = "../k3s-ansible/inventory"
+ansible_inventory_path = "../k3s-ansible-hardened/inventory"
 ansible_tz = "Europe/Amsterdam"
 
 # k3s
-cluster_name = "production"
+cluster_name = "services"
 k3s_version = "v1.24.9+k3s1"
 kube_vip_version = "v0.5.7"
 metal_lb_speaker_version = "v0.13.7"

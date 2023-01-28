@@ -3,7 +3,7 @@ terraform {
     organization = "berglucht"
 
     workspaces {
-      name = "k3s-rancher"
+      name = "sprint-staging"
     }
   }
 }
