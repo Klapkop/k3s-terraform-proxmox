@@ -1,4 +1,13 @@
 ---
+##### HARDENING ######
+
+# SSH
+ssh_kerberos_support: false
+ssh_allow_users: "ansible"
+ssh_client_alive_count: 2
+ssh_print_last_log: true
+
+##### K3S ######
 k3s_version: "${k3s_version}"
 # this is the user that has ssh access to these machines
 ansible_user: "${ansible_user}"
