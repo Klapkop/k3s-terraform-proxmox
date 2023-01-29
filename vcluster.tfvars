@@ -14,7 +14,7 @@ ansible_inventory_path = "../k3s-ansible-hardened/inventory"
 ansible_tz = "Europe/Amsterdam"
 
 # k3s
-cluster_name = "services"
+cluster_name = "vcluster"
 k3s_version = "v1.24.9+k3s1"
 kube_vip_version = "v0.5.7"
 metal_lb_speaker_version = "v0.13.7"
