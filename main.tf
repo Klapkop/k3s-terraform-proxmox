@@ -124,7 +124,7 @@ resource "local_file" "user_var_file" {
 }
 
 resource "random_password" "k3s_token" {
-  length           = 16
+  length           = 30
   special          = false
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
